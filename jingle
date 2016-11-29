@@ -2,3 +2,4 @@ github is a openssl kill
 openssl genrsa -out rsaprivatekey.pem 1024
 
 penssl jingle 安全网站
+self-relaince
