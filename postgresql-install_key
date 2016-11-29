@@ -1,0 +1,43 @@
+$dnf list postgresql\*
+
+$ sudo dnf install postgresql-server
+$ sudo postgresql-setup --initdb
+$ sudo systemctl start postgresql
+
+$ su - postgres
+$ psql
+ psql (9.5.3)
+ Type "help" for help.
+
+ postgres=# \password postgres
+
+$ createuser john -P
+$ createdb --owner=john mydb
+
+# TYPE DATABASE USER     ADDRESS      METHOD
+ host  all      all      127.0.0.1/32 md5
+ host  all      all      ::1/128      md5
+ local all      postgres              peer
+
+ $ sudo systemctl restart postgresql
+
+ $ psql -h localhost -U john mydb
+Password for user john:
+psql (9.5.3)
+Type "help" for help.
+
+mydb=> _
+
+
+
+$ sudo dnf install docker
+$ sudo systemctl start docker
+
+$ sudo docker pull fedora/postgresql
+
+$ sudo mkdir data
+$ sudo chown 26:26 data
+$ sudo chcon -t svirt_sandbox_file_t data
+
+$ sudo docker run -v "`pwd`/data:/var/lib/pgsql/data:Z" -e POSTGRESQL_USER=john 
+   -e POSTGRESQL_PASSWORD=secret -e POSTGRESQL_DATABASE=mydb -d -p 5432:5432 fedora/postgresql
